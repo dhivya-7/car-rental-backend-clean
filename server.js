@@ -21,6 +21,19 @@ connectDB();
 
 const app = express();
 
+
+const corsOptions = {
+  origin: [
+    "http://localhost:3000", // local dev
+    "https://frontend-client-31xc.onrender.com" // deployed frontend
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+};
+
+app.use(cors(corsOptions));
+
+
 // Middleware
 app.use(cors());
 app.use(express.json());
