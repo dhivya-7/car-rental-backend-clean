@@ -10,13 +10,12 @@ const connectDB = require("./config/db");
 // Import Routes
 const authRoutes = require("./routes/authRoutes");
 const carRoutes = require("./routes/carRoutes");
-const bookingRoutes = require("./routes/bookingRoutes");
 const companyRoutes = require("./routes/companyRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const partnerRoutes = require("./routes/partnerRoutes");
 const newsletterRoutes = require("./routes/newsletterRoutes");
 const feedbackRoutes = require("./routes/feedback");
-
+const bookingRoutes = require("./routes/bookingRoutes");
 // Connect DB
 connectDB();
 
@@ -33,12 +32,12 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/cars", carRoutes);
-app.use("/api/bookings", bookingRoutes);
 app.use("/api/companies", companyRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/partners", partnerRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/feedback", feedbackRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 // Stripe Checkout Route
 app.post("/create-checkout-session", async (req, res) => {

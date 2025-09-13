@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 
 const bookingSchema = new mongoose.Schema({
@@ -12,7 +11,6 @@ const bookingSchema = new mongoose.Schema({
   dropoffTime: { type: String, required: true },
   driverAge: { type: Number },
   promoCode: { type: String },
-  rentalPeriod: { type: String, default: "1d" },
   totalPrice: { type: Number, default: 0 },
 }, { timestamps: true });
 

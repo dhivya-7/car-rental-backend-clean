@@ -4,9 +4,16 @@ const Car = require("../models/Car");
 // Create booking
 exports.createBooking = async (req, res) => {
   try {
-    const booking = await Booking.create(req.body);
+    const booking = await Booking.create({
+      ...req.body,
+      pickupDate: new Date(req.body.pickupDate),
+      dropoffDate: new Date(req.body.dropoffDate),
+    });
+
+    console.log("Booking saved:", booking);
     res.status(201).json(booking);
   } catch (err) {
+    console.error("Booking save error:", err.message);
     res.status(500).json({ message: err.message });
   }
 };
@@ -14,12 +21,7 @@ exports.createBooking = async (req, res) => {
 // Search available cars
 exports.searchBookings = async (req, res) => {
   try {
-    const { pickup, dropoff, pickupDate, pickupTime, dropoffDate, dropoffTime } = req.body;
-
-    if (!pickup || !dropoff || !pickupDate || !dropoffDate) {
-      return res.status(400).json({ message: "Pickup, drop-off, and dates are required" });
-    }
-
+    const { pickupDate, pickupTime, dropoffDate, dropoffTime } = req.body;
     const pickupDateTime = new Date(`${pickupDate}T${pickupTime || "00:00"}`);
     const dropoffDateTime = new Date(`${dropoffDate}T${dropoffTime || "23:59"}`);
 
@@ -29,11 +31,12 @@ exports.searchBookings = async (req, res) => {
       ],
     }).select("carId");
 
-    const bookedCarIds = bookedCars.map((b) => b.carId);
+    const bookedCarIds = bookedCars.map(b => b.carId);
     const availableCars = await Car.find({ _id: { $nin: bookedCarIds } });
 
-    res.json({ cars: availableCars, pickup, dropoff, pickupDate, dropoffDate });
+    res.json({ cars: availableCars });
   } catch (err) {
+    console.error("Booking search error:", err.message);
     res.status(500).json({ message: err.message });
   }
 };
